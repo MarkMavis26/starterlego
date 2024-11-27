@@ -61,18 +61,12 @@ def handle_color_action(color: str):
         print(f"No action mapped for color: {color}")
 
 # Loop until we stop program
-<<<<<<< HEAD
 
 a = 60
-while True:
-    color = cs.color()
-    handle_color_action(str(color), a)
-=======
 if __name__ == "__main__":
     while True:
         color = cs.color()
-        handle_color_action(str(color))
->>>>>>> 30346bc (adding tests)
+        handle_color_action(str(color), a)
 
 
    
