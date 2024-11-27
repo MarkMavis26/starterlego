@@ -5,6 +5,8 @@ from pybricks.ev3devices import Motor, ColorSensor
 from pybricks.parameters import Port
 from pybricks.tools import wait
 
+
+
 # Initialize the color sensor
 cs = ColorSensor(Port.S4)
 
@@ -32,13 +34,26 @@ def move_clockwise(color: str):
 
 def move_back_and_forth(color: str):
     print(color + "...move back and forth!!")
-    medium_motor.run_angle(700, 360)  # Adjust speed for faster rotation
+
+    medium_motor.run_angle(700, 360)
+
+    medium_motor.run_angle(700, -360)
+
+def step_forward_two_back(color: str, a: int):
+    print(color + "...no progress!!")
+
+    medium_motor.run_angle(700, a)
+
+    medium_motor.rug_angle(700, -2(a))
+
+      # Adjust speed for faster rotation
 
 # Map colors to functions
 color_action_map = {
     "Color.YELLOW": move_counter_clockwise,
     "Color.RED": move_clockwise,
     "Color.GREEN": move_back_and_forth,
+    "Color.BLUE": step_forward_two_back,
 }
 
 # Check for color and execute the mapped action
@@ -50,9 +65,11 @@ def handle_color_action(color: str):
         print(f"No action mapped for color: {color}")
 
 # Loop until we stop program
+
+a = 60
 while True:
     color = cs.color()
-    handle_color_action(str(color))
+    handle_color_action(str(color), a)
 
 
    
