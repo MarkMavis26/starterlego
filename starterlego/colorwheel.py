@@ -30,20 +30,16 @@ def move_counter_clockwise(color: str):
 
 def move_clockwise(color: str):
     print(color + "...clockwise!")
-    medium_motor.run_angle(700, 360)  # Adjust speed for faster rotation
+    medium_motor.run_angle(500, -360)  # Adjust speed for faster rotation
 
 def move_back_and_forth(color: str):
     print(color + "...move back and forth!!")
-
     medium_motor.run_angle(700, 360)
-
     medium_motor.run_angle(700, -360)
 
 def step_forward_two_back(color: str, a: int):
     print(color + "...no progress!!")
-
     medium_motor.run_angle(700, a)
-
     medium_motor.rug_angle(700, -2(a))
 
       # Adjust speed for faster rotation
@@ -65,11 +61,18 @@ def handle_color_action(color: str):
         print(f"No action mapped for color: {color}")
 
 # Loop until we stop program
+<<<<<<< HEAD
 
 a = 60
 while True:
     color = cs.color()
     handle_color_action(str(color), a)
+=======
+if __name__ == "__main__":
+    while True:
+        color = cs.color()
+        handle_color_action(str(color))
+>>>>>>> 30346bc (adding tests)
 
 
    
