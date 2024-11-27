@@ -11,6 +11,8 @@ sys.modules['pybricks.parameters'] = MagicMock()
 sys.modules['pybricks.tools'] = MagicMock()
 from colorwheel import handle_color_action
 
+# to run these:
+# python -m tests.test_colorwheel
 class TestColorActionMap(TestCase):
     @parameterized.expand([
         ("yellow", "Color.YELLOW", "Color.YELLOW...counter clockwise!", 500, 360),
