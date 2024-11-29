@@ -16,14 +16,22 @@ from pybricks.ev3devices import Motor, ColorSensor
 from pybricks.parameters import Port, Stop
 from pybricks.tools import wait
 from pybricks.robotics import DriveBase
+import logging
 
 ev3 = EV3Brick()
+
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,  # Set to DEBUG for more details
+    format="%(asctime)s [%(levelname)s] %(message)s",
+)
 
 
 
 left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
-tank_drive = MoveTank(Port.A, Port.B)
+#tank_drive = MoveTank(Port.A, Port.B)
 color_sensor = ColorSensor(Port.S3)
 
 #function controls steering
@@ -39,8 +47,8 @@ color_sensor = ColorSensor(Port.S3)
 #move_steering(steering=0, speed=500, duration=2)
 
 TARGET_LIGHT_INTENSITY = 50  # Adjust based on your setup (midway between black and white)
-KP = 1.0                    # Proportional gain (tune this value for better performance)
-BASE_SPEED = 200            # Base speed of the robot (in degrees per second)
+KP = 2.0                    # Proportional gain (tune this value for better performance)
+BASE_SPEED = 75            # Base speed of the robot (in degrees per second)
 
 def follow_line():
     while True:
@@ -52,14 +60,24 @@ def follow_line():
         
         # Calculate adjustment using proportional control
         turn_rate = KP * error
-        
+
         # Adjust motor speeds
         left_speed = BASE_SPEED + turn_rate
         right_speed = BASE_SPEED - turn_rate
-        
+
         # Apply motor speeds
         left_motor.run(left_speed)
         right_motor.run(right_speed)
+
+        # Log important variables
+        logging.info("Light Intensity: {}".format(light_intensity))
+        logging.info("Error: {}".format(error))
+        logging.info("Turn Rate: {}".format(turn_rate))
+
+        # Log motor speeds
+        logging.info("Left Speed: {}".format(left_speed))
+        logging.info("Right Speed: {}".format(right_speed))
+
         
         # Small delay for smoother control
         wait(10)
