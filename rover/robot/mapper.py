@@ -17,6 +17,7 @@ from pybricks.tools import wait
 from pybricks.robotics import DriveBase
 from pybricks.nxtdevices import UltrasonicSensor
 import logging
+import urequests
 
 ev3 = EV3Brick()
 logging.basicConfig(
@@ -55,6 +56,11 @@ def main():
         forward(rot_angle_cm)
         distance_in_centimeters = ultrasonic_sensor.distance()/10
         logging.info("Distance: {} cm".format(distance_in_centimeters))
+
+        # TEMP - just make http request
+        r = urequests.get('https://api.github.com/events')
+        logging.info('json length: ' + len(r.json()))
+
        #IF LAST MEASURE LESS THAN 200 AND NEXT MEASURE IS GREATER THAN 2000, ASSUME YOU'VE HIT A WALL
         while distance_in_centimeters not in targ:
             backward(rot_angle_cm)
