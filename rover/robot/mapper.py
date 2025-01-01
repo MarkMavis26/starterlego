@@ -52,14 +52,19 @@ def main():
     #each rotation moves the bot forward approx 5cm
     move_angle=500
 
+    #create mission against flask server
+    headers = {'Content-Type': 'application/json'}
+    r = urequests.post('http://192.168.4.69:5001/missions', json={}, headers=headers)
+    logging.info("response: {}".format(r.content))
+
     while True:
         forward(rot_angle_cm)
         distance_in_centimeters = ultrasonic_sensor.distance()/10
         logging.info("Distance: {} cm".format(distance_in_centimeters))
 
         # TEMP - just make http request
-        r = urequests.get('https://api.github.com/events')
-        logging.info('json length: ' + len(r.json()))
+        
+        
 
        #IF LAST MEASURE LESS THAN 200 AND NEXT MEASURE IS GREATER THAN 2000, ASSUME YOU'VE HIT A WALL
         while distance_in_centimeters not in targ:
