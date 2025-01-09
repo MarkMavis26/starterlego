@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select a Mission</title>
+</head>
+<body>
+    <h1>Select a Mission</h1>
+    <form action="/missions/" method="get">
+        <select name="id" onchange="location = this.value;">
+            <option value="">-- Select a Mission --</option>
+            {% for id, mission in missions.items() %}
+            <option value="/missions/{{ id }}">{{ mission.name }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</body>
+</html>

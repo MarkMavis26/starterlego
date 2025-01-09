@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Telemetry for {{ mission_name }}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/3.6.1/bokeh.min.js" integrity="sha512-qzQ7weqWqj8EtLfMB4t3iCZkT1NVU+q/AMoq+lBJY/CjuX9ywmTWZod5IXZeFgyKXnVyPBBlFQLESUauOYAmqg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{ script|safe }} <!-- Bokeh script -->
+</head>
+<body>
+    <h1>Telemetry for {{ mission_name }}</h1>
+    {{ div|safe }} <!-- Bokeh div -->
+    <a href="/">Back to Missions</a>
+</body>
+</html>
