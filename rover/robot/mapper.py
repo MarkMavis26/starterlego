@@ -25,10 +25,14 @@ logging.basicConfig(
     level=logging.INFO,  # Set to DEBUG for more details
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
-print("debug 1")
+
 left_motor = Motor(Port.C)
 right_motor = Motor(Port.B)
 ultrasonic_sensor = UltrasonicSensor(Port.S2)
+
+#networking variables
+server = "http://192.168.4.69:5001"
+headers = {'Content-Type': 'application/json'}
 
 def move(m: Motor, s: int, r: int, w: bool):
     m.run_angle(speed=s, rotation_angle=r, wait=w)
@@ -41,18 +45,18 @@ def pivot_right(rotation_angle: int):
     move(left_motor, 200, rotation_angle, False)    
     move(right_motor, 200, -rotation_angle, True)
     #todo: confirm rotation angle    
-    (rotation_angle/500)*90
+    return (rotation_angle/500)*90
 
 def pivot_left(rotation_angle: int):
     move(right_motor, 200, rotation_angle, False)    
     move(left_motor, 200, -rotation_angle, True)
     #todo: confirm rotation angle    
-    -(rotation_angle/500)*90
+    return -(rotation_angle/500)*90
 
 def backward(rot_angle_cm: int): 
     forward(-rot_angle_cm)
 
-def send_telemetry(distance_in_centimeters, rot_angle_cm, current_angle, moved_cm):
+def send_telemetry(missionId, distance_in_centimeters, rot_angle_cm, current_angle, moved_cm):
     try:
         telemetry_data = {
             "distance_in_cm": distance_in_centimeters,
@@ -61,7 +65,7 @@ def send_telemetry(distance_in_centimeters, rot_angle_cm, current_angle, moved_c
             "moved_cm": moved_cm
         }
         print(ujson.dumps(telemetry_data))
-        telemetry_response = urequests.post("{}/missions/{}/telemetry".format(server, missionID), json=telemetry_data, headers=headers)
+        telemetry_response = urequests.post("{}/missions/{}/telemetry".format(server, missionId), json=telemetry_data, headers=headers)
     except Exception as e:
         logging.error("An unexpected error occurred: %s", e)       
 
@@ -70,42 +74,32 @@ def main():
     targ = range(10,100000)
     rot_angle_cm=31.83098863
     #each rotation moves the bot forward approx 5cm
-    print("debug 3")
-   
-    server = "http://192.168.4.69:5001"
-    print("debug 4")
-    #create mission against flask server
-    headers = {'Content-Type': 'application/json'}
-    print("debug 4")
-    payload = ujson.dumps({})
-    print("debug 4")
+    
     #https://www.ev3dev.org/docs/tutorials/setting-up-wifi-using-the-command-line/
-    r = urequests.post("{}/missions".format(server), data=payload, headers=headers)
-    print("debug 5")
-    # missionID = r.json()['id']
+    r = urequests.post("{}/missions".format(server), data=ujson.dumps({}), headers=headers)
     
     response_data = r.json()
-    missionID = response_data['id']
+    missionId = response_data['id']
     print("Response:", response_data)
-    print("Mission ID:", missionID) 
+    print("Mission ID:", missionId) 
   
-    # logging.info("response: {}, missionID: {}".format(r.content, missionID))
     current_angle = 0
-    print("debug 6")
     #breakpoint()
     
     while True:
+
+        print("moving forward")
         forward(rot_angle_cm)
         distance_in_centimeters = ultrasonic_sensor.distance()/10
         logging.info("Distance: {} cm".format(distance_in_centimeters))
-        print("debug 3")
-        send_telemetry(distance_in_centimeters, rot_angle_cm, current_angle, 1)
+        print("debug 7")
+        send_telemetry(missionId, distance_in_centimeters, rot_angle_cm, current_angle, 1)
        
        #IF LAST MEASURE LESS THAN 200 AND NEXT MEASURE IS GREATER THAN 2000, ASSUME YOU'VE HIT A WALL
 
         while distance_in_centimeters not in targ:
             backward(rot_angle_cm)
-            send_telemetry(distance_in_centimeters, rot_angle_cm, current_angle, -1)
+            send_telemetry(missionId, distance_in_centimeters, rot_angle_cm, current_angle, -1)
 
             wheel_rotation_angle=500
             logging.info("pivoting right {}".format(wheel_rotation_angle))

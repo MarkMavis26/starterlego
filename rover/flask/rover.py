@@ -1,3 +1,5 @@
+#flask --app rover run --host=0.0.0.0 --port=5001 --debug
+
 from flask import Flask, jsonify, request, render_template
 from bokeh.plotting import figure, show
 from bokeh.embed import components
