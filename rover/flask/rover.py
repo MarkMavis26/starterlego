@@ -50,10 +50,10 @@ def create_mission():
 
 def process_telemetry(mission, telemetry_data):
   
-    moved_cm = telemetry_data['moved_cm']
-    current_angle = math.radians(telemetry_data['current_angle'])
-    mission['x_coord'] = mission['x_coord'] + (math.cos(current_angle) * moved_cm)
-    mission['y_coord'] = mission['y_coord'] + (math.sin(current_angle) * moved_cm)
+    distance_in_centimeters = telemetry_data['distance_in_centimeters']
+    current_robot_angle = math.radians(telemetry_data['current_robot_angle'])
+    mission['x_coord'] = mission['x_coord'] + (math.cos(current_robot_angle) * distance_in_centimeters)
+    mission['y_coord'] = mission['y_coord'] + (math.sin(current_robot_angle) * distance_in_centimeters)
     telemetry_data['x_coord'] = mission['x_coord']
     telemetry_data['y_coord'] = mission['y_coord']
 
@@ -151,10 +151,10 @@ def seed_data():
         telemetry[current_mission_id] = []
         for i in range(10):
             telemetry_data = {}
-            telemetry_data['distance_in_cm'] = 0
-            telemetry_data['moved_cm'] = random.random()
-            telemetry_data['move_rot'] = 0
-            telemetry_data['current_angle'] = random.randint(1, 360)
+            telemetry_data['sensor_distance'] = 0
+            telemetry_data['distance_in_centimeters'] = random.random()
+            telemetry_data['wheel_rotation_angle'] = 0
+            telemetry_data['current_robot_angle'] = random.randint(1, 360)
             process_telemetry(mission_data, telemetry_data)
             telemetry[current_mission_id].append(telemetry_data)
         current_mission_id += 1
