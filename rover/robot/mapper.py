@@ -58,14 +58,14 @@ def pivot_left(rotation_angle: int):
     move(left_motor, default_motor_rotation_speed, -wheel_rotation_angle, True)
 
 def calculate_sensor_distance_centimeters():
-    ultrasonic_sensor.distance()/10
+    return ultrasonic_sensor.distance()/10
 
 # calculation functions
 def rotation_angle_to_robot_distance_cm(rotation_angle: int):
-    rotation_angle/rotation_degrees_per_centimeter
+    return rotation_angle/rotation_degrees_per_centimeter
 
 def rotation_angle_to_wheel_rotation_angle(rotation_angle: int):
-    (rotation_angle / 90) * 500
+    return (rotation_angle / 90) * 500
 
 def generate_robot_mission_name():
     # Dictionaries of wild adjectives, animals, and numbers
@@ -79,7 +79,7 @@ def generate_robot_mission_name():
     number = random.choice(numbers)
 
     # Combine them into a zany mission name
-    mission_name = f"{adjective} {animal} {number:02}"
+    mission_name = "{} {} {}".format(adjective, animal, number)
     return mission_name
 
 # rest client calls
@@ -133,6 +133,7 @@ def main():
             logging.info("pivoting right {} degrees".format(correction_right_angle))
 
             pivot_right(correction_right_angle)
+            current_robot_angle += correction_right_angle
             
             sensor_distance_centimeters = calculate_sensor_distance_centimeters()
         
