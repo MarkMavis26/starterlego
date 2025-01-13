@@ -8,8 +8,8 @@
     <form action="/missions/" method="get">
         <select name="id" onchange="location = this.value;">
             <option value="">-- Select a Mission --</option>
-            {% for id, mission in missions.items() %}
-            <option value="/ui/missions/{{ id }}">{{ mission.name }}</option>
+            {% for mission in missions %}
+            <option value="/ui/missions/{{ mission.id }}">{{ mission.name }}</option>
             {% endfor %}
         </select>
     </form>

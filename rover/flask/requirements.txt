@@ -1,0 +1,3 @@
+Flask==2.3.3
+Bokeh==3.6.2
+flask_sqlalchemy
